@@ -97,8 +97,13 @@ export async function getAllKfcItems(): Promise<IKfcItem[]> {
 
   // 加载所有月份的数据
   for (const month of months) {
-    const items = await getKfcItemsByMonth(month)
-    allItems = [...allItems, ...items]
+    try {
+      const items = await getKfcItemsByMonth(month)
+      allItems = [...allItems, ...items]
+    } catch (error) {
+      console.warn(`警告：无法加载${month}月的数据:`, error)
+      continue // 跳过无法加载的月份
+    }
   }
 
   return allItems
@@ -180,28 +185,43 @@ export async function getRandomKfcItem(): Promise<IKfcItem> {
     throw new Error('无法获取随机项目：summary数据不可用')
   }
 
-  // 随机选择一个月份，但考虑各月份的数据量进行加权
-  const totalItems = summary.totalItems
-  const randomIndex = Math.floor(Math.random() * totalItems)
-
-  let cumulativeCount = 0
-  let selectedMonth = summary.months[0].month
-
-  for (const monthInfo of summary.months) {
-    cumulativeCount += monthInfo.count
-    if (randomIndex < cumulativeCount) {
-      selectedMonth = monthInfo.month
-      break
+  // 获取所有可用的月份
+  const availableMonths = summary.months;
+  
+  // 随机选择一个有数据的月份
+  let selectedMonth: string | null = null;
+  let items: IKfcItem[] = [];
+  
+  // 随机选择一个有数据的月份，最多尝试10次
+  for (let i = 0; i < 10; i++) {
+    const randomMonthIndex = Math.floor(Math.random() * availableMonths.length);
+    const candidateMonth = availableMonths[randomMonthIndex].month;
+    
+    const monthItems = await getKfcItemsByMonth(candidateMonth);
+    if (monthItems.length > 0) {
+      selectedMonth = candidateMonth;
+      items = monthItems;
+      break;
     }
   }
 
-  // 获取该月的项目
-  const items = await getKfcItemsByMonth(selectedMonth)
-  if (!items.length) {
-    throw new Error(`无法获取随机项目：${selectedMonth}月数据为空`)
+  // 如果仍然没有找到有数据的月份，就从第一个有数据的月份获取
+  if (!selectedMonth || items.length === 0) {
+    for (const monthInfo of availableMonths) {
+      const monthItems = await getKfcItemsByMonth(monthInfo.month);
+      if (monthItems.length > 0) {
+        selectedMonth = monthInfo.month;
+        items = monthItems;
+        break;
+      }
+    }
+  }
+
+  if (!selectedMonth || items.length === 0) {
+    throw new Error('无法获取随机项目：没有找到任何有效的数据')
   }
 
   // 随机选择一个项目
-  const randomItemIndex = Math.floor(Math.random() * items.length)
-  return items[randomItemIndex]
+  const randomItemIndex = Math.floor(Math.random() * items.length);
+  return items[randomItemIndex];
 }
