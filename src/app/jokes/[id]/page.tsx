@@ -1,6 +1,4 @@
 import { notFound } from 'next/navigation'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
 import { getAllKfcItems } from '@/lib/server-utils'
 import { FormattedDate } from '@/components/shared/FormattedDate'
 import Image from 'next/image'
@@ -61,28 +59,17 @@ async function fetchIssueByNumber(issueNumber: number): Promise<IKfcItem | null>
 }
 
 async function getJokeForParams(id: string): Promise<IKfcItem | null> {
-  if (isIssueNumberParam(id)) {
-    return fetchIssueByNumber(Number(id))
-  }
-
+  // 静态导出模式：只从本地数据获取，不支持动态 issue number 查询
   const items = await getAllKfcItems()
   return items.find((item) => item.id === id) || null
 }
 
-// 生成静态参数（可选，用于优化）
-// 生成静态参数（可选，用于优化）
+// 生成所有段子详情页的静态参数
 export async function generateStaticParams() {
-  // 为了减小构建大小，只生成几个示例页面
-  const sampleIds = [
-    'I_kwDOLrzjj87hwCO3',
-    'I_kwDOLrzjj87gNBo4',
-    'I_kwDOLrzjj87foj91',
-    'I_kwDOMCjUQs5j6Q2C',
-    'I_kwDOMCjUQs5j6Q2D',
-  ];
+  const items = await getAllKfcItems()
   
-  return sampleIds.map((id) => ({
-    id: id,
+  return items.map((item) => ({
+    id: item.id,
   }));
 }
 
@@ -132,18 +119,12 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-export const revalidate = 3600 // 1小时重新验证一次
-
 export default async function JokeDetailPage({ params }: PageProps) {
   const joke = await getJokeForParams(params.id)
 
   if (!joke) {
     notFound()
   }
-
-  // 获取用户登录状态
-  const session = await getServerSession(authOptions)
-  const isAuthenticated = !!session?.user
 
   // 计算热门状态
   const totalReactions = joke.reactions?.totalCount || 0
@@ -154,7 +135,7 @@ export default async function JokeDetailPage({ params }: PageProps) {
       {/* 返回按钮 */}
       <div className="mb-6">
         <a
-          href="/jokes"
+          href="/jokes/"
           className="group inline-flex items-center text-sm font-medium text-gray-500 transition-colors duration-300 hover:text-kfc-red"
         >
           <i className="fa fa-arrow-left mr-2 transition-transform duration-300 group-hover:-translate-x-1"></i>
@@ -225,34 +206,29 @@ export default async function JokeDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* 互动区域 - 仅登录用户显示 */}
-            {isAuthenticated && (
-              <>
-                {/* 分隔线 */}
-                <div className="my-6 border-t border-gray-100 md:my-8"></div>
+            {/* 互动区域 */}
+            <div className="my-6 border-t border-gray-100 md:my-8"></div>
 
-                <div className="mb-6">
-                  <div className="mb-3 flex items-center gap-2 md:mb-4">
-                    <i className="fa fa-heart text-lg text-kfc-red md:text-xl"></i>
-                    <h2 className="text-lg font-bold text-gray-800 md:text-xl">互动反馈</h2>
-                  </div>
+            <div className="mb-6">
+              <div className="mb-3 flex items-center gap-2 md:mb-4">
+                <i className="fa fa-heart text-lg text-kfc-red md:text-xl"></i>
+                <h2 className="text-lg font-bold text-gray-800 md:text-xl">互动反馈</h2>
+              </div>
 
-                  <div className="rounded-lg bg-gray-50 p-3 md:p-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <i className="fa fa-heart"></i>
-                      <span>{totalReactions} reactions</span>
-                    </div>
-                  </div>
+              <div className="rounded-lg bg-gray-50 p-3 md:p-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <i className="fa fa-heart"></i>
+                  <span>{totalReactions} reactions</span>
                 </div>
-              </>
-            )}
+              </div>
+            </div>
           </div>
         </article>
 
         {/* 底部操作按钮 - 优化移动端布局 */}
         <div className="mt-6 flex flex-col gap-3 md:mt-8 md:flex-row md:justify-center md:gap-4">
         <a
-          href="/jokes"
+          href="/jokes/"
           className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 font-bold text-gray-800 transition-all hover:bg-gray-50 hover:border-gray-300"
         >
           <span>再来一条</span>

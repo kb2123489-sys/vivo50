@@ -1,30 +1,18 @@
-import Image from 'next/image'
 import JokeDetail from '@/components/jokes/Detail'
-import { getAllKfcItems, getRandomKfcItem } from '@/lib/server-utils'
-import { redirect } from 'next/navigation'
+import { getAllKfcItems } from '@/lib/server-utils'
+import RefreshJokeButton from '@/components/jokes/RefreshJokeButton'
 
-interface PageProps {
-  searchParams: {
-    joke?: string
-  }
+// 构建时获取一个随机段子作为默认显示
+async function getDefaultJoke() {
+  const allJokes = await getAllKfcItems()
+  if (allJokes.length === 0) return null
+  const randomIndex = Math.floor(Math.random() * allJokes.length)
+  return allJokes[randomIndex]
 }
 
-export default async function Page({ searchParams }: PageProps) {
-  // 如果没有提供 joke 参数，获取随机段子并重定向
-  if (!searchParams.joke) {
-    const randomJoke = await getRandomKfcItem()
-    redirect(`/?joke=${randomJoke.id}`)
-  }
-
-  // 验证 jokeId 是否存在
-  const allJokes = await getAllKfcItems()
-  const jokeExists = allJokes.some((item) => item.id === searchParams.joke)
-
-  // 如果 joke ID 不存在，获取随机段子并重定向
-  if (!jokeExists) {
-    const randomJoke = await getRandomKfcItem()
-    redirect(`/?joke=${randomJoke.id}`)
-  }
+export default async function Page() {
+  const defaultJoke = await getDefaultJoke()
+  const defaultJokeId = defaultJoke?.id || ''
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-16">
@@ -56,8 +44,9 @@ export default async function Page({ searchParams }: PageProps) {
             Top Headline / 头条
           </div>
           <div className="h-1 flex-1 bg-black"></div>
+          <RefreshJokeButton />
         </div>
-        <JokeDetail jokeId={searchParams.joke} />
+        <JokeDetail jokeId={defaultJokeId} />
       </div>
 
       {/* 功能导航 - 模块化网格 */}
@@ -69,7 +58,7 @@ export default async function Page({ searchParams }: PageProps) {
           <h3 className="mb-2 text-2xl font-black uppercase italic">文案仓库</h3>
           <p className="mb-6 font-bold text-gray-600">历年疯四文案大赏，总有一条能骗到v50</p>
           <a
-            href="/jokes"
+            href="/jokes/"
             className="inline-block border-2 border-black bg-black px-6 py-2 text-lg font-black uppercase italic text-white shadow-neo-sm transition-all hover:bg-kfc-red"
           >
             Enter Gallery
@@ -83,7 +72,7 @@ export default async function Page({ searchParams }: PageProps) {
           <h3 className="mb-2 text-2xl font-black uppercase italic">历史记录</h3>
           <p className="mb-6 font-bold text-gray-600">查看往期精彩段子</p>
           <a
-            href="/jokes"
+            href="/jokes/"
             className="inline-block border-2 border-black bg-black px-6 py-2 text-lg font-black uppercase italic text-white shadow-neo-sm transition-all hover:bg-kfc-yellow hover:text-black"
           >
             View History

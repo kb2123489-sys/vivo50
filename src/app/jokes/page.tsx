@@ -1,16 +1,19 @@
 import { Suspense } from 'react'
 import JokesList from '@/components/jokes/List'
+import { getSummary } from '@/lib/server-utils'
 
-// 获取URL参数的类型定义
-interface PageProps {
-  searchParams: {
-    page?: string
-  }
+// 生成静态分页参数
+export async function generateStaticParams() {
+  const summary = await getSummary()
+  const totalPages = Math.ceil(summary.totalItems / 20) // 每页20条
+  
+  // 生成所有分页的参数（但这里是默认第1页）
+  return []
 }
 
-export default async function JokesPage({ searchParams }: PageProps) {
-  // 从URL参数获取页码
-  const page = parseInt(searchParams.page || '1')
+export default async function JokesPage() {
+  // 默认显示第1页
+  const page = 1
 
   return (
     <div className="container mx-auto px-4 py-8">

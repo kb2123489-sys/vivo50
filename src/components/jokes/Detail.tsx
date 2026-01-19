@@ -92,7 +92,7 @@ export default async function JokeDetail({ jokeId }: JokeDetailProps) {
 
           {/* 客户端交互按钮 */}
           <div className="flex justify-center">
-            <RefreshJokeButton currentJokeId={joke.id} />
+            <RefreshJokeButton />
           </div>
         </div>
       </div>

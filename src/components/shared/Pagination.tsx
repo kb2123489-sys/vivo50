@@ -1,26 +1,23 @@
-'use client'
-
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 
 interface PaginationProps {
   currentPage: number
   totalPages: number
   totalItems: number
   pageSize: number
+  baseUrl?: string  // 静态分页基础路径，默认 '/jokes/page/'
 }
 
 /**
- * 分页组件
+ * 分页组件（静态导出兼容版本）
  */
 export default function Pagination({
   currentPage,
   totalPages,
   totalItems,
   pageSize,
+  baseUrl = '/jokes/page/',
 }: PaginationProps) {
-  const searchParams = useSearchParams()
-
   if (totalPages <= 1) return null
 
   const generatePageNumbers = () => {
@@ -54,10 +51,12 @@ export default function Pagination({
 
   const pageNumbers = generatePageNumbers()
 
+  // 静态路由：第1页是 /jokes/，其他是 /jokes/page/{n}/
   const buildUrl = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('page', page.toString())
-    return `?${params.toString()}`
+    if (page === 1) {
+      return '/jokes/'
+    }
+    return `${baseUrl}${page}/`
   }
 
   return (

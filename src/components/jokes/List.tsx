@@ -4,13 +4,14 @@ import ListWithReactions from './ListWithReactions'
 
 interface JokesListProps {
   currentPage: number
+  baseUrl?: string  // 静态分页基础路径，默认 '/jokes/page/'
 }
 
 /**
  * 段子列表容器（服务端组件）
  * 职责：获取分页数据，渲染列表结构
  */
-export default async function JokesList({ currentPage }: JokesListProps) {
+export default async function JokesList({ currentPage, baseUrl = '/jokes/page/' }: JokesListProps) {
   const { items, totalPages, total } = await getKfcItemsWithPagination(
     currentPage,
     10,
@@ -39,6 +40,7 @@ export default async function JokesList({ currentPage }: JokesListProps) {
         totalPages={totalPages}
         totalItems={total}
         pageSize={10}
+        baseUrl={baseUrl}
       />
     </section>
   )
