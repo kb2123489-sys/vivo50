@@ -78,43 +78,20 @@ export default async function Page({ searchParams }: PageProps) {
 
         <div className="group border-3 border-black bg-white p-6 shadow-neo transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-xl">
           <div className="mb-4 flex h-12 w-12 items-center justify-center border-2 border-black bg-kfc-yellow text-black shadow-neo-sm">
-            <i className="fa fa-upload text-2xl"></i>
+            <i className="fa fa-history text-2xl"></i>
           </div>
-          <h3 className="mb-2 text-2xl font-black uppercase italic">我要投稿</h3>
-          <p className="mb-6 font-bold text-gray-600">分享你的创意文案，让更多人受益</p>
+          <h3 className="mb-2 text-2xl font-black uppercase italic">历史记录</h3>
+          <p className="mb-6 font-bold text-gray-600">查看往期精彩段子</p>
           <a
-            href="/submit"
+            href="/jokes"
             className="inline-block border-2 border-black bg-black px-6 py-2 text-lg font-black uppercase italic text-white shadow-neo-sm transition-all hover:bg-kfc-yellow hover:text-black"
           >
-            Submit Now
+            View History
           </a>
         </div>
       </div>
 
-      {/* 提交段子区 - 极致疯狂风格 */}
-      <section id="submit-joke" className="mt-16 md:mt-24">
-        <div className="relative border-4 border-black bg-kfc-red p-8 shadow-neo-xl md:p-12 lg:p-16">
-          <div className="absolute -left-6 -top-6 hidden rotate-12 border-2 border-black bg-kfc-yellow px-6 py-2 text-xl font-black uppercase italic text-black shadow-neo-sm md:block">
-            We Need You!
-          </div>
-          
-          <div className="relative z-10 mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-4xl font-black italic uppercase text-white drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] md:text-6xl">
-              我要投稿 / SUBMIT
-            </h2>
-            <p className="mb-10 text-lg font-bold text-white md:text-xl">
-              把你的私藏文案交出来，造福广大疯四信徒。越离谱，越容易被推荐！
-            </p>
 
-            <a
-              href="/submit"
-              className="inline-block border-4 border-black bg-white px-10 py-4 text-2xl font-black uppercase italic text-black shadow-neo transition-all hover:translate-x-1 hover:translate-y-1 hover:bg-kfc-yellow hover:shadow-none"
-            >
-              Upload Now!
-            </a>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

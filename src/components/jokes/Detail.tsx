@@ -1,7 +1,6 @@
 import { FormattedDate } from '@/components/shared/FormattedDate'
 import Image from 'next/image'
 import CopyButton from '@/components/shared/CopyButton'
-import InteractiveReactions from '@/components/reactions/Interactive'
 import RefreshJokeButton from './RefreshJokeButton'
 import { getAllKfcItems } from '@/lib/server-utils'
 
@@ -84,10 +83,10 @@ export default async function JokeDetail({ jokeId }: JokeDetailProps) {
 
             {/* Reactions 区域 */}
             <div className="flex items-center gap-4">
-              <InteractiveReactions
-                issueId={joke.id}
-                className="flex-wrap"
-              />
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <i className="fa fa-heart"></i>
+                <span>{joke.reactions?.totalCount || 0} reactions</span>
+              </div>
             </div>
           </div>
 

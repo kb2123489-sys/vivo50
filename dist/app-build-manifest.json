@@ -1,26 +1,47 @@
 {
   "pages": {
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/css/framework.css",
-      "static/chunks/framework.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+    "/not-found": [
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/chunks/app/not-found-31211382b3792f72.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/chunks/app/_not-found/page-ae477feaf267e984.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/css/framework.css",
-      "static/chunks/framework.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/css/7131399b62f9f51f.css",
+      "static/chunks/app/layout-e334b7b331302d12.js"
     ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/css/framework.css",
-      "static/chunks/framework.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+    "/page": [
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/chunks/app/page-8c7ec2946de509a0.js"
+    ],
+    "/jokes/page": [
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/chunks/app/jokes/page-5a95cd487641a62a.js"
+    ],
+    "/jokes/[id]/page": [
+      "static/chunks/webpack-2f06e93741cc386b.js",
+      "static/css/3aba731d870273be.css",
+      "static/chunks/framework-c169177fd4471b16.js",
+      "static/chunks/main-app-4a1c0aba960edff8.js",
+      "static/chunks/app/jokes/[id]/page-39484cc8e8423321.js"
     ]
   }
 }

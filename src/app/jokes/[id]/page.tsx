@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -6,7 +5,6 @@ import { getAllKfcItems } from '@/lib/server-utils'
 import { FormattedDate } from '@/components/shared/FormattedDate'
 import Image from 'next/image'
 import CopyButton from '@/components/shared/CopyButton'
-import InteractiveReactions from '@/components/reactions/Interactive'
 import Link from 'next/link'
 import { IKfcItem } from '@/types'
 
@@ -240,19 +238,10 @@ export default async function JokeDetailPage({ params }: PageProps) {
                   </div>
 
                   <div className="rounded-lg bg-gray-50 p-3 md:p-4">
-                    <Suspense
-                      fallback={
-                        <div className="flex items-center gap-2 text-gray-500">
-                          <div className="h-6 w-6 animate-spin rounded-full border-2 border-kfc-red border-t-transparent"></div>
-                          <span>加载互动数据中...</span>
-                        </div>
-                      }
-                    >
-                      <InteractiveReactions
-                        issueId={joke.id}
-                        className="flex-wrap gap-2"
-                      />
-                    </Suspense>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <i className="fa fa-heart"></i>
+                      <span>{totalReactions} reactions</span>
+                    </div>
                   </div>
                 </div>
               </>

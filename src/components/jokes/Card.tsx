@@ -4,8 +4,6 @@ import { FormattedDate } from '@/components/shared/FormattedDate'
 import Image from 'next/image'
 import Link from 'next/link'
 import CopyButton from '@/components/shared/CopyButton'
-import InteractiveReactions from '@/components/reactions/Interactive'
-import ReactionsLoading from '@/components/reactions/Loading'
 import { IKfcItem } from '@/types'
 
 interface JokeCardProps {
@@ -80,15 +78,10 @@ export default function JokeCard({
 
         {/* 互动数据展示 */}
         <div className="min-w-0 overflow-hidden pt-1">
-          {waitForBatchData ? (
-            <ReactionsLoading />
-          ) : (
-            <InteractiveReactions
-              issueId={item.id}
-              initialReactionDetails={initialReactionDetails}
-              initialReactionNodes={initialReactionNodes}
-            />
-          )}
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <i className="fa fa-heart"></i>
+            <span>{totalReactions} reactions</span>
+          </div>
         </div>
       </div>
     </div>

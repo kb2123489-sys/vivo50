@@ -24,7 +24,6 @@ export default function Header({ contributorsCount }: HeaderProps) {
 
   const navLinks = [
     { label: '文案仓库', href: '/jokes' },
-    { label: '我要投稿', href: '/submit' },
     { label: '系统状态', href: '/status' },
   ]
 
