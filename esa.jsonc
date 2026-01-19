@@ -1,116 +1,216 @@
 {
+  // 阿里云 ESA (边缘安全加速) 配置文件
+  // 基于 Next.js 编译输出生成
+  // Build ID: dChBxrnpHkMU0dNA9M_dU
 
-  // 应用基本信息
-  "name": "vme",                              // 应用名称
-  "type": "webapp",                           // 应用类型：webapp表示Web应用
-  "version": "1.0.0",                        // 应用版本号
-  
-  // 运行环境配置
-  "runtime": {
-    "engine": "nodejs",                       // 运行引擎：nodejs
-    "version": "20.x"                         // Node.js 版本，与项目中的 volta 配置保持一致
-  },
+  "version": "1.0",
+  "name": "vme-nextjs-app",
 
-  // 构建配置
-  "build": {
-    "script": "npm install && npm run build", // 构建命令
-    "distPath": ".next",                     // 构建产物路径，Next.js 默认输出到 .next 目录
-    "assetsDirectory": ".next/static",       // 静态资源拷贝目录
-    "functionFile": ".next/standalone/server.js" // SSR 函数入口文件
-  },
-
-  // 启动配置
-  "start": {
-    "command": "npx serve -s .next/server",   // 启动命令，使用 serve 工具启动 Next.js 服务
-    "port": 3000                             // 应用监听端口
-  },
-
-  // 环境变量定义
-  "env": [
+  // 静态资源配置
+  "routes": [
+    // ==================== 静态资源 (长期缓存) ====================
     {
-      "key": "NODE_ENV",
-      "value": "production",
-      "description": "Node.js 环境变量，设为 production 以启用生产模式优化"
+      // Next.js 静态资源 - JS chunks (带 hash，可长期缓存)
+      "match": "/_next/static/chunks/*",
+      "cache": {
+        "edge_ttl": 31536000,
+        "browser_ttl": 31536000,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
     },
     {
-      "key": "NEXT_TELEMETRY_DISABLED",
-      "value": "1",
-      "description": "禁用 Next.js 遥测功能"
+      // CSS 文件
+      "match": "/_next/static/css/*",
+      "cache": {
+        "edge_ttl": 31536000,
+        "browser_ttl": 31536000,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
     },
     {
-      "key": "PORT",
-      "value": "3000",
-      "description": "应用监听端口，必须与 start.port 保持一致"
+      // 字体文件
+      "match": "/_next/static/media/*",
+      "cache": {
+        "edge_ttl": 31536000,
+        "browser_ttl": 31536000,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      // Build manifest 文件
+      "match": "/_next/static/dChBxrnpHkMU0dNA9M_dU/*",
+      "cache": {
+        "edge_ttl": 31536000,
+        "browser_ttl": 31536000,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+
+    // ==================== 公共静态资源 ====================
+    {
+      // 公共图片资源
+      "match": "/images/*",
+      "cache": {
+        "edge_ttl": 86400,
+        "browser_ttl": 86400,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      // Favicon
+      "match": "/favicon.ico",
+      "cache": {
+        "edge_ttl": 86400,
+        "browser_ttl": 86400,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+
+    // ==================== 页面路由 ====================
+    {
+      // 首页
+      "match": "/",
+      "cache": {
+        "edge_ttl": 60,
+        "browser_ttl": 0,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate",
+        "X-Robots-Tag": "index, follow"
+      }
+    },
+    {
+      // Jokes 列表页
+      "match": "/jokes",
+      "cache": {
+        "edge_ttl": 60,
+        "browser_ttl": 0,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      // Jokes 详情页 (动态路由，ISR 3600秒)
+      "match": "/jokes/*",
+      "cache": {
+        "edge_ttl": 3600,
+        "browser_ttl": 0,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400"
+      }
+    },
+
+    // ==================== RSC 数据请求 ====================
+    {
+      // RSC prefetch 请求
+      "match": "/*.prefetch.rsc",
+      "cache": {
+        "edge_ttl": 300,
+        "browser_ttl": 300,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Cache-Control": "public, max-age=300",
+        "Content-Type": "text/x-component"
+      }
+    },
+    {
+      // RSC 数据请求
+      "match": "/*.rsc",
+      "cache": {
+        "edge_ttl": 60,
+        "browser_ttl": 0,
+        "cache_level": "cache_everything"
+      },
+      "headers": {
+        "Content-Type": "text/x-component",
+        "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+      }
+    },
+
+    // ==================== API 和动态内容 ====================
+    {
+      // Next.js 内部数据路由 - 不缓存
+      "match": "/_next/data/*",
+      "cache": {
+        "cache_level": "bypass"
+      }
     }
   ],
 
-  // 域名配置（发布后可修改）
-  "domain": {
-    "autoGenerate": true,                     // 自动生成子域名
-    "custom": []                             // 自定义域名数组，可为空
+  // 安全头配置
+  "security_headers": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-XSS-Protection": "1; mode=block",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
   },
 
-  // 静态资源处理（虽然不能完全静态导出，但仍需配置）
-  "static": {
-    "enable": true,                          // 启用静态资源服务
-    "paths": ["/_next/*", "/static/*", "/favicon.ico", "/robots.txt"], // 静态资源路径
-    "cacheControl": "max-age=31536000"       // 静态资源缓存策略
+  // 重定向规则 (与 Next.js 保持一致)
+  "redirects": [
+    {
+      // 移除尾部斜杠
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "status_code": 308
+    }
+  ],
+
+  // 压缩配置
+  "compression": {
+    "gzip": true,
+    "brotli": true,
+    "min_size": 1024
   },
 
-  // 路由配置
-  "routes": {
-    // 处理 Next.js 的内部路由
-    "/_next/*": {
-      "static": true,
-      "cache": true
-    },
-    // API 路由需要通过 Node.js 处理
-    "/api/*": {
-      "handler": "nodejs",
-      "rewrite": "/api"
-    },
-    // 动态路由处理
-    "/jokes/:id": {
-      "handler": "nodejs",
-      "rewrite": "/jokes/[id]"
-    },
-    // 其他所有路由都通过 Next.js 处理
-    "/*": {
-      "handler": "nodejs",
-      "rewrite": "/"
+  // 错误页面配置
+  "error_pages": {
+    "404": "/_not-found",
+    "500": "/500.html"
+  },
+
+  // 源站配置
+  "origin": {
+    "protocol": "https",
+    "timeout": 30,
+    "retry": {
+      "count": 2,
+      "interval": 1000
     }
   },
 
-  // 资源规格配置
-  "resources": {
-    "cpu": "1",                              // CPU 核心数
-    "memory": "1024Mi",                      // 内存大小
-    "storage": "1Gi"                         // 存储空间
-  },
-
-  // 健康检查配置
-  "healthCheck": {
-    "/api/health": {
-      "protocol": "HTTP",
-      "path": "/api/status",                 // 健康检查路径，使用项目中的状态 API
-      "timeout": 5000,
-      "interval": 30,
-      "successThreshold": 1,
-      "failureThreshold": 3
-    }
-  },
-
-  // 安全配置
-  "security": {
-    "cors": {
-      "enable": true,
-      "origins": ["*"]                       // 根据实际需求调整 CORS 设置
-    }
-  },
-
-  // 日志配置
-  "logging": {
-    "level": "info",                         // 日志级别
-    "accessLog": true                        // 启用访问日志
-  }
+  // 预热配置 (可选，用于预热静态资源)
+  "prefetch": [
+    "/_next/static/chunks/webpack-36b40d49dc4aa1ce.js",
+    "/_next/static/chunks/framework-f66176bb897dc684.js",
+    "/_next/static/chunks/main-33bdb821650acdee.js",
+    "/_next/static/chunks/main-app-d1c43b401eef634c.js",
+    "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+    "/_next/static/css/125fa2babef796b1.css",
+    "/_next/static/media/37e1d48fe87dd79a-s.p.woff2"
+  ]
 }
