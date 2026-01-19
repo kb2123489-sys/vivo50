@@ -1,3 +1,125 @@
 {
-    "assets": "dist/static"
+  /**
+   * 阿里云弹性Web托管(ESA)配置文件
+   * 
+   * 项目名称：肯德基疯狂星期四文案库
+   * 项目类型：Next.js SSR应用
+   * 
+   * 注意事项：
+   * 1. 此项目包含API路由和动态路由，无法使用静态导出模式
+   * 2. 必须使用Node.js运行环境进行服务端渲染
+   * 3. 配置了必要的环境变量和构建设置
+   */
+
+  // 应用基本信息
+  "name": "vme",                              // 应用名称
+  "type": "webapp",                           // 应用类型：webapp表示Web应用
+  "version": "1.0.0",                        // 应用版本号
+  
+  // 运行环境配置
+  "runtime": {
+    "engine": "nodejs",                       // 运行引擎：nodejs
+    "version": "20.x"                         // Node.js 版本，与项目中的 volta 配置保持一致
+  },
+
+  // 构建配置
+  "build": {
+    "script": "npm install && npm run build", // 构建命令
+    "distPath": ".next"                      // 构建产物路径，Next.js 默认输出到 .next 目录
+  },
+
+  // 启动配置
+  "start": {
+    "command": "npx serve -s .next/server",   // 启动命令，使用 serve 工具启动 Next.js 服务
+    "port": 3000                             // 应用监听端口
+  },
+
+  // 环境变量定义
+  "env": [
+    {
+      "key": "NODE_ENV",
+      "value": "production",
+      "description": "Node.js 环境变量，设为 production 以启用生产模式优化"
+    },
+    {
+      "key": "NEXT_TELEMETRY_DISABLED",
+      "value": "1",
+      "description": "禁用 Next.js 遥测功能"
+    },
+    {
+      "key": "PORT",
+      "value": "3000",
+      "description": "应用监听端口，必须与 start.port 保持一致"
+    }
+  ],
+
+  // 域名配置（发布后可修改）
+  "domain": {
+    "autoGenerate": true,                     // 自动生成子域名
+    "custom": []                             // 自定义域名数组，可为空
+  },
+
+  // 静态资源处理（虽然不能完全静态导出，但仍需配置）
+  "static": {
+    "enable": true,                          // 启用静态资源服务
+    "paths": ["/_next/*", "/static/*", "/favicon.ico", "/robots.txt"], // 静态资源路径
+    "cacheControl": "max-age=31536000"       // 静态资源缓存策略
+  },
+
+  // 路由配置
+  "routes": {
+    // 处理 Next.js 的内部路由
+    "/_next/*": {
+      "static": true,
+      "cache": true
+    },
+    // API 路由需要通过 Node.js 处理
+    "/api/*": {
+      "handler": "nodejs",
+      "rewrite": "/api"
+    },
+    // 动态路由处理
+    "/jokes/:id": {
+      "handler": "nodejs",
+      "rewrite": "/jokes/[id]"
+    },
+    // 其他所有路由都通过 Next.js 处理
+    "/*": {
+      "handler": "nodejs",
+      "rewrite": "/"
+    }
+  },
+
+  // 资源规格配置
+  "resources": {
+    "cpu": "1",                              // CPU 核心数
+    "memory": "1024Mi",                      // 内存大小
+    "storage": "1Gi"                         // 存储空间
+  },
+
+  // 健康检查配置
+  "healthCheck": {
+    "/api/health": {
+      "protocol": "HTTP",
+      "path": "/api/status",                 // 健康检查路径，使用项目中的状态 API
+      "timeout": 5000,
+      "interval": 30,
+      "successThreshold": 1,
+      "failureThreshold": 3
+    }
+  },
+
+  // 安全配置
+  "security": {
+    "cors": {
+      "enable": true,
+      "origins": ["*"]                       // 根据实际需求调整 CORS 设置
+    }
+  },
+
+  // 日志配置
+  "logging": {
+    "level": "info",                         // 日志级别
+    "accessLog": true                        // 启用访问日志
+  }
 }
