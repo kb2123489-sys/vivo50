@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllKfcItems } from '@/lib/server-utils'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 60 // 60秒缓存
 
 export async function GET(
