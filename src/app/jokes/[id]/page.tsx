@@ -74,8 +74,8 @@ async function getJokeForParams(id: string): Promise<IKfcItem | null> {
 // 生成静态参数（可选，用于优化）
 export async function generateStaticParams() {
   const items = await getAllKfcItems()
-  // 只为前 100 个段子生成静态页面，其他的使用 ISR
-  return items.slice(0, 100).map((item) => ({
+  // 只为前 10 个热门段子生成静态页面，其他的使用 ISR
+  return items.slice(0, 10).map((item) => ({
     id: item.id,
   }))
 }
