@@ -1,1 +1,13 @@
-{}
+{
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/jokes/page": "app/jokes/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/items/[id]/route": "app/api/items/[id]/route.js",
+  "/api/random/route": "app/api/random/route.js",
+  "/api/items/route": "app/api/items/route.js",
+  "/jokes/[id]/page": "app/jokes/[id]/page.js",
+  "/api/items/page/route": "app/api/items/page/route.js",
+  "/api/random/id/route": "app/api/random/id/route.js"
+}

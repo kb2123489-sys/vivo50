@@ -16,91 +16,12 @@ const nextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    // 进一步优化代码分割以减小包大小
+    // 移除 splitChunks 配置，使用 Next.js 默认配置以获得更好优化
     if (isServer) {
-      // 服务器端优化：更激进的代码分割
-      config.optimization.splitChunks = {
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          // 按功能拆分包
-          framework: {
-            name: 'framework',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/](next|react|react-dom|scheduler|prop-types)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          lib: {
-            name: 'lib',
-            test(module) {
-              return module.size() > 160000 && /node_modules[\\/]/.test(module.identifier());
-            },
-            priority: 30,
-            minChunks: 1,
-            enforce: true,
-          },
-          commons: {
-            name: 'commons',
-            minChunks: 2,
-            priority: 20,
-            reuseExistingChunk: true,
-            enforce: true,
-          },
-          defaultVendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            reuseExistingChunk: true,
-            enforce: true,
-          },
-        },
-      };
-    } else {
-      // 客户端优化
-      config.optimization.splitChunks = {
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          framework: {
-            name: 'framework',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/](next|react|react-dom|scheduler|prop-types)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          lib: {
-            name: 'lib',
-            test(module) {
-              return module.size() > 160000 && /node_modules[\\/]/.test(module.identifier());
-            },
-            priority: 30,
-            minChunks: 1,
-            enforce: true,
-          },
-          commons: {
-            name: 'commons',
-            minChunks: 2,
-            priority: 20,
-            reuseExistingChunk: true,
-          },
-          defaultVendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-        },
-      };
-    }
-      
-    // 移除不必要的插件以减小体积
-    if (config.optimization) {
-      // 确保不使用可能导致体积增大的优化
-      if (isServer) {
-        // 服务器端不需要压缩，只在客户端进行
-        config.optimization.minimize = false;
-      }
+      // 服务器端优化
+      config.optimization.minimize = false; // 服务器端不需要压缩
+      config.optimization.usedExports = false;
+      config.optimization.sideEffects = false;
     }
       
     return config;
