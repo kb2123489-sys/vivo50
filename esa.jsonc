@@ -1,91 +1,113 @@
 {
-  // 阿里云 ESA (边缘安全加速) 配置文件
-  // 基于 Next.js 静态导出模式 (output: 'export')
-  // 构建后静态文件位于 out/ 目录
+  /**
+   * 阿里云弹性Web托管(ESA)配置文件
+   * 
+   * 项目名称：肯德基疯狂星期四文案库
+   * 项目类型：Next.js 静态导出应用
+   * 
+   * 说明：
+   * 1. 此项目已配置为静态导出模式(output: 'export')
+   * 2. 构建后文件位于 out/ 目录
+   * 3. 包含大量预渲染的静态页面(285个静态页面)
+   */
 
-  // ==================== 核心配置 (必需) ====================
-  // 静态资源目录 - Next.js 静态导出的 out 目录
+  // 应用基本信息
+  "name": "vme-static-site",
+  "type": "webapp",
+  "version": "1.0.0",
+  
+  // 静态资源目录配置
   "assets": "out",
 
-  // ==================== 基础配置 ====================
-  "name": "vme-nextjs-app",
-  "version": "1.0",
+  // 运行环境配置
+  "runtime": {
+    "engine": "static",
+    "version": "1.0"
+  },
+
+  // 构建配置
+  "build": {
+    "script": "npm install && npm run build",
+    "distPath": "out"
+  },
+
+  // 启动配置（静态站点无需启动命令）
+  "start": {
+    "command": "",
+    "port": 80
+  },
+
+  // 静态资源处理
+  "static": {
+    "enable": true,
+    "paths": ["/**"],
+    "cacheControl": "max-age=31536000"
+  },
 
   // 路由配置
-  "routes": [
-    // ==================== 静态资源 (长期缓存) ====================
-    {
-      // Next.js 静态资源 - JS/CSS/Media (带 hash，可长期缓存)
-      "match": "/_next/static/*",
-      "cache": {
-        "edge_ttl": 31536000,
-        "browser_ttl": 31536000,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+  "routes": {
+    // Next.js 静态资源 - 长期缓存
+    "/_next/static/*": {
+      "static": true,
+      "cache": true,
+      "cacheControl": "max-age=31536000, immutable"
     },
-
-    // ==================== 公共静态资源 ====================
-    {
-      // 公共图片资源
-      "match": "/images/*",
-      "cache": {
-        "edge_ttl": 86400,
-        "browser_ttl": 86400,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=86400"
-      }
+    
+    // 图片资源缓存
+    "/images/*": {
+      "static": true,
+      "cache": true,
+      "cacheControl": "max-age=604800"
     },
-    {
-      // Favicon
-      "match": "/favicon.ico",
-      "cache": {
-        "edge_ttl": 86400,
-        "browser_ttl": 86400,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=86400"
-      }
+    
+    // Favicon 缓存
+    "/favicon.ico": {
+      "static": true,
+      "cache": true,
+      "cacheControl": "max-age=86400"
     },
-
-    // ==================== HTML 页面 (静态导出) ====================
-    {
-      // 所有 HTML 页面 - 适度缓存
-      "match": "/*",
-      "cache": {
-        "edge_ttl": 3600,
-        "browser_ttl": 0,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
+    
+    // 预渲染页面
+    "/jokes/*": {
+      "static": true,
+      "cache": true,
+      "cacheControl": "max-age=3600"
+    },
+    
+    // 首页和其他静态页面
+    "/*": {
+      "static": true,
+      "cache": true,
+      "cacheControl": "max-age=3600"
     }
-  ],
-
-  // 安全头配置
-  "security_headers": {
-    "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "SAMEORIGIN",
-    "X-XSS-Protection": "1; mode=block",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
   },
 
-  // 压缩配置
-  "compression": {
-    "gzip": true,
-    "brotli": true,
-    "min_size": 1024
+  // 域名配置
+  "domain": {
+    "autoGenerate": true,
+    "custom": []
   },
 
-  // 错误页面配置
-  "error_pages": {
-    "404": "/404.html"
+  // 资源规格配置
+  "resources": {
+    "cpu": "0.5",
+    "memory": "512Mi",
+    "storage": "512Mi"
+  },
+
+  // 安全配置
+  "security": {
+    "headers": {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-XSS-Protection": "1; mode=block",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+
+  // 日志配置
+  "logging": {
+    "level": "info",
+    "accessLog": true
   }
 }
