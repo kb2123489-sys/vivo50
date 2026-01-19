@@ -14,7 +14,9 @@
   // 构建配置
   "build": {
     "script": "npm install && npm run build", // 构建命令
-    "distPath": ".next"                      // 构建产物路径，Next.js 默认输出到 .next 目录
+    "distPath": ".next",                     // 构建产物路径，Next.js 默认输出到 .next 目录
+    "assetsDirectory": ".next/static",       // 静态资源拷贝目录
+    "functionFile": ".next/standalone/server.js" // SSR 函数入口文件
   },
 
   // 启动配置

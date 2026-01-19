@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',          // 注释掉静态导出，以便API路由正常工作
+  output: 'standalone',         // 生成独立可运行的 server.js，方便平台复制函数入口
   // distDir: 'dist',           // 可选：把产物放到 dist 目录，方便平台拷贝
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   // 禁用某些不必要的功能来减小包大小
