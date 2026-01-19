@@ -31,8 +31,8 @@ export default function Footer() {
 
           {/* 导航链接 */}
           <nav className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold uppercase tracking-wider md:gap-8 md:text-sm">
-            {['首页', '文案库', '英雄榜', '我要投稿', '状态'].map((item, index) => {
-               const hrefs = ['/', '/jokes', '/leaderboard', '/submit', '/status'];
+            {['首页', '文案库', '我要投稿', '状态'].map((item, index) => {
+               const hrefs = ['/', '/jokes', '/submit', '/status'];
                return (
                 <a
                   key={item}

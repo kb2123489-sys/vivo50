@@ -1,0 +1,47 @@
+{
+  "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
+    ],
+    "/jokes/page": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/jokes/page.js"
+    ],
+    "/submit/page": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/submit/page.js"
+    ],
+    "/status/page": [
+      "static/chunks/webpack.js",
+      "static/css/framework.css",
+      "static/chunks/framework.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/status/page.js"
+    ]
+  }
+}

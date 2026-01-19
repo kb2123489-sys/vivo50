@@ -78,15 +78,15 @@ export default async function Page({ searchParams }: PageProps) {
 
         <div className="group border-3 border-black bg-white p-6 shadow-neo transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-xl">
           <div className="mb-4 flex h-12 w-12 items-center justify-center border-2 border-black bg-kfc-yellow text-black shadow-neo-sm">
-            <i className="fa fa-trophy text-2xl"></i>
+            <i className="fa fa-upload text-2xl"></i>
           </div>
-          <h3 className="mb-2 text-2xl font-black uppercase italic">V50 英雄榜</h3>
-          <p className="mb-6 font-bold text-gray-600">谁的文案最能打？谁是疯四之王？</p>
+          <h3 className="mb-2 text-2xl font-black uppercase italic">我要投稿</h3>
+          <p className="mb-6 font-bold text-gray-600">分享你的创意文案，让更多人受益</p>
           <a
-            href="/leaderboard"
+            href="/submit"
             className="inline-block border-2 border-black bg-black px-6 py-2 text-lg font-black uppercase italic text-white shadow-neo-sm transition-all hover:bg-kfc-yellow hover:text-black"
           >
-            Check Ranking
+            Submit Now
           </a>
         </div>
       </div>
