@@ -1,0 +1,24 @@
+name: 文案审核
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  moderate-issue:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == '文案'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      actions: write
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      - name: 运行脚本
+        run: |
+          cd actions_scripts
+          node ./dist/moderateIssue.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
