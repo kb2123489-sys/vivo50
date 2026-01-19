@@ -1,53 +1,33 @@
 {
   // 阿里云 ESA (边缘安全加速) 配置文件
-  // 基于 Next.js 编译输出生成
-  // Build ID: dChBxrnpHkMU0dNA9M_dU
+  // 基于 Next.js standalone 模式编译输出
 
-  "version": "1.0",
+  // ==================== 核心配置 (必需) ====================
+  // 静态资源目录 - 需要同时包含 .next/static 和 public
+  "assets": [
+    {
+      "from": ".next/static",
+      "to": "/_next/static"
+    },
+    {
+      "from": "public",
+      "to": "/"
+    }
+  ],
+
+  // 边缘函数入口文件 - Next.js standalone 模式的 server.js
+  "function": ".next/standalone/server.js",
+
+  // ==================== 基础配置 ====================
   "name": "vme-nextjs-app",
+  "version": "1.0",
 
-  // 静态资源配置
+  // 路由配置
   "routes": [
     // ==================== 静态资源 (长期缓存) ====================
     {
-      // Next.js 静态资源 - JS chunks (带 hash，可长期缓存)
-      "match": "/_next/static/chunks/*",
-      "cache": {
-        "edge_ttl": 31536000,
-        "browser_ttl": 31536000,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      // CSS 文件
-      "match": "/_next/static/css/*",
-      "cache": {
-        "edge_ttl": 31536000,
-        "browser_ttl": 31536000,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      // 字体文件
-      "match": "/_next/static/media/*",
-      "cache": {
-        "edge_ttl": 31536000,
-        "browser_ttl": 31536000,
-        "cache_level": "cache_everything"
-      },
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      // Build manifest 文件
-      "match": "/_next/static/dChBxrnpHkMU0dNA9M_dU/*",
+      // Next.js 静态资源 - JS/CSS/Media (带 hash，可长期缓存)
+      "match": "/_next/static/*",
       "cache": {
         "edge_ttl": 31536000,
         "browser_ttl": 31536000,
